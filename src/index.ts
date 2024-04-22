@@ -20,9 +20,14 @@ cloudinary.config({
 
 // 新建express服务器
 const app = express();
+
+app.use(cors())
+
+// 当收到路径为 /api/order/checkout/webhook 的请求时，Express 会使用 express.raw 中间件来解析请求体中的原始数据，并将其作为 req.body 提供给后续的中间件或路由处理函数
+app.use("/api/order/checkout/webhook", express.raw({ type: "*/*" }));
+
 // 添加中间件，将api请求转为json
 app.use(express.json())
-app.use(cors())
 
 app.get("/health", async (req: Request, res: Response) => {
     res.send({ message: "health OK!" });
